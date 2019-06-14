@@ -1,3 +1,133 @@
-<p>
-  table works!
-</p>
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="button-controls d-inline-flex">
+          <div class="btn-group">
+            <button class="btn btn-secondary text-capitalize"
+                    *ngFor="let dimension of dimensions"
+                    [class.active]="dimension === selectedDimension"
+                    (click)="mainDimensionChange(dimension)">
+              {{dimension.name}}
+            </button>
+          </div>
+        </div>
+        <div class="selector-controls d-inline-flex">
+          <div class="input-group">
+            <select
+              class="form-control mr-3"
+              name="second_group"
+              (change)="secondLayerSelected($event)">
+              <option [value]="null">Second group</option>
+              <option
+                class="text-capitalize"
+                *ngFor="let layer of dimensions"
+                [value]="layer.value">{{layer.name}}</option>
+            </select>
+            <select
+              [disabled]="!selectedSecondLayer"
+              class="form-control"
+              name="third_group"
+              (change)="thirdLayerSelected($event)">>
+              <option [value]="null">Third group</option>
+              <option
+                class="text-capitalize"
+                *ngFor="let layer of dimensions3"
+                [value]="layer.value">{{layer.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <app-datepicker></app-datepicker>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 mt-2">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col" sortable="name" (sort)="onSort($event)">Source</th>
+        <th scope="col" sortable="leads" (sort)="onSort($event)">Leads</th>
+        <th scope="col" sortable="percentage" (sort)="onSort($event)">% of Leads</th>
+        <th scope="col" sortable="revenue_leads" (sort)="onSort($event)">Revenue Leads</th>
+        <th scope="col" sortable="revenue_calls" (sort)="onSort($event)">Revenue Calls</th>
+        <th scope="col" sortable="revenue_full" (sort)="onSort($event)">Revenue Full</th>
+        <th scope="col" sortable="cost" (sort)="onSort($event)">Cost</th>
+        <th scope="col" sortable="p_lead" (sort)="onSort($event)">P/L</th>
+        <th scope="col" sortable="roi" (sort)="onSort($event)">ROI</th>
+        <th scope="col" sortable="cpl" (sort)="onSort($event)">CPL</th>
+        <th scope="col" sortable="rpl" (sort)="onSort($event)">RPL</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let lead of leads; let i = index;">
+        <tr style="cursor: pointer" (click)="expandRow(i)">
+          <td>{{ lead.name }}</td>
+          <td>{{ lead.leads}}</td>
+          <td>{{ round(lead.percentage) }}%</td>
+          <td>${{ lead.revenue_leads }}</td>
+          <td>${{ lead.revenue_calls }}</td>
+          <td>${{ lead.revenue_full }}</td>
+          <td>${{ lead.cost }}</td>
+          <td>${{ lead.p_lead }}</td>
+          <td>{{ lead.roi }}%</td>
+          <td>${{ lead.cpl }}</td>
+          <td>${{ round(lead.rpl) }}</td>
+        </tr>
+        <ng-container *ngIf="i === expandedIndex">
+          <ng-container *ngFor="let secondLead of secondLayerData">
+            <tr style="background-color: lightcyan; cursor: pointer"
+                (click)="secondLead.expanded = !secondLead.expanded">
+              <td>{{ secondLead.name }}</td>
+              <td>{{ secondLead.leads}}</td>
+              <td>{{ round(secondLead.percentage) }}%</td>
+              <td>${{ secondLead.revenue_leads }}</td>
+              <td>${{ secondLead.revenue_calls }}</td>
+              <td>${{ secondLead.revenue_full }}</td>
+              <td>${{ secondLead.cost }}</td>
+              <td>${{ secondLead.p_lead }}</td>
+              <td>{{ secondLead.roi }}%</td>
+              <td>${{ secondLead.cpl }}</td>
+              <td>${{ round(secondLead.rpl) }}</td>
+            </tr>
+            <ng-container *ngIf="secondLead.expanded">
+              <tr style="background-color: lightcoral;"
+                  *ngFor="let thirdLead of thirdLayerData">
+                <td>{{ thirdLead.name }}</td>
+                <td>{{ thirdLead.leads}}</td>
+                <td>{{ round(thirdLead.percentage) }}%</td>
+                <td>${{ thirdLead.revenue_leads }}</td>
+                <td>${{ thirdLead.revenue_calls }}</td>
+                <td>${{ thirdLead.revenue_full }}</td>
+                <td>${{ thirdLead.cost }}</td>
+                <td>${{ thirdLead.p_lead }}</td>
+                <td>{{ thirdLead.roi }}%</td>
+                <td>${{ thirdLead.cpl }}</td>
+                <td>${{ round(thirdLead.rpl) }}</td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      </tbody>
+      <tfoot>
+        <tr class="total font-weight-bold">
+          <td>Total</td>
+          <td>{{ totalLeads }}</td>
+          <td>{{ round(getTotal((leads), 'percentage')) }}%</td>
+          <td>${{ getTotal((leads), 'revenue_leads') }}</td>
+          <td>${{ getTotal((leads), 'revenue_calls') }}</td>
+          <td>${{ getTotal((leads), 'revenue_full') }}</td>
+          <td>${{ getTotal((leads), 'cost') }}</td>
+          <td>${{ getTotal((leads), 'p_lead') }}</td>
+          <td>{{ getTotal((leads), 'roi') }}%</td>
+          <td>${{ getTotal((leads), 'cpl') }}</td>
+          <td>${{ round(getTotal((leads), 'rpl')) }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+

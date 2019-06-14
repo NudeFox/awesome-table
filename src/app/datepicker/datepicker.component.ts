@@ -1,6 +1,6 @@
 import {
   Component,
-  ElementRef,
+  ElementRef, OnDestroy,
   OnInit,
   Renderer2,
   ViewChild
@@ -10,7 +10,9 @@ import {
   NgbDateStruct,
   NgbDateParserFormatter
 } from '@ng-bootstrap/ng-bootstrap';
-import {NgModel} from '@angular/forms';
+import {DateRangeService} from './date-range.service';
+import {tap} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
 
 
 const now = new Date();
@@ -30,16 +32,15 @@ const after = (one: NgbDateStruct, two: NgbDateStruct) =>
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.css']
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent implements OnInit, OnDestroy {
+  subscription: Subscription;
   startDate: NgbDateStruct;
   maxDate: NgbDateStruct;
   minDate: NgbDateStruct;
   hoveredDate: NgbDateStruct;
   fromDate: any;
   toDate: any;
-  model: any;
-  @ViewChild("d") input: NgbInputDatepicker;
-  @ViewChild(NgModel) datePick: NgModel;
+  @ViewChild('d') input: NgbInputDatepicker;
   @ViewChild('myRangeInput') myRangeInput: ElementRef;
 
   isHovered = date =>
@@ -47,17 +48,22 @@ export class DatepickerComponent implements OnInit {
   isInside = date => after(date, this.fromDate) && before(date, this.toDate);
   isFrom = date => equals(date, this.fromDate);
   isTo = date => equals(date, this.toDate);
+  parseDate = (date: NgbDateStruct): string => this._parserFormatter.format(date);
 
   constructor(
     element: ElementRef,
     private renderer: Renderer2,
-    private _parserFormatter: NgbDateParserFormatter
+    private _parserFormatter: NgbDateParserFormatter,
+    private dateRangeService: DateRangeService
   ) { }
 
   ngOnInit() {
     this.startDate = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
     this.maxDate = { year: now.getFullYear() + 1, month: now.getMonth() + 1, day: now.getDate()};
     this.minDate = {year: now.getFullYear() - 1, month: now.getMonth() + 1, day: now.getDate()};
+    this.subscription = this.dateRangeService.dateUnselected$.pipe(
+      tap(() => this.renderer.setProperty(this.myRangeInput.nativeElement, 'value', ''))
+    ).subscribe();
   }
 
   onDateSelection(date: NgbDateStruct) {
@@ -71,13 +77,22 @@ export class DatepickerComponent implements OnInit {
       this.toDate = null;
       this.fromDate = date;
     }
+
     if (this.fromDate) {
-      parsed += this._parserFormatter.format(this.fromDate);
+      parsed += this.parseDate(this.fromDate);
     }
     if (this.toDate) {
-      parsed += ' - ' + this._parserFormatter.format(this.toDate);
+      parsed += ' - ' + this.parseDate(this.toDate);
     }
 
+    this.dateRangeService.dateSelected$.next({
+      fromDate: this.parseDate(this.fromDate),
+      toDate: this.parseDate(this.toDate)
+    });
     this.renderer.setProperty(this.myRangeInput.nativeElement, 'value', parsed);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
