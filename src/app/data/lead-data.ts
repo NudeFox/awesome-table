@@ -1,0 +1,101 @@
+export const data = [{
+  'name': 'Skibox',
+  'leads': 512,
+  'revenue_leads': 61727,
+  'revenue_calls': 25,
+  'cost': 25,
+  'p_lead': 54,
+  'roi': 85,
+  'cpl': 91,
+  'date': '1/2/2019'
+}, {
+  'name': 'Devify',
+  'leads': 102,
+  'revenue_leads': 62656,
+  'revenue_calls': 37,
+  'cost': 62,
+  'p_lead': 7,
+  'roi': 129,
+  'cpl': 19,
+  'date': '9/7/2018'
+}, {
+  'name': 'Dablist',
+  'leads': 157,
+  'revenue_leads': 68229,
+  'revenue_calls': 39,
+  'cost': 31,
+  'p_lead': 62,
+  'roi': 78,
+  'cpl': 68,
+  'date': '6/9/2018'
+}, {
+  'name': 'Jaxnation',
+  'leads': 355,
+  'revenue_leads': 33022,
+  'revenue_calls': 35,
+  'cost': 38,
+  'p_lead': 49,
+  'roi': 433,
+  'cpl': 18,
+  'date': '5/24/2019'
+}, {
+  'name': 'Vidoo',
+  'leads': 632,
+  'revenue_leads': 33881,
+  'revenue_calls': 65,
+  'cost': 28,
+  'p_lead': 74,
+  'roi': 381,
+  'cpl': 52,
+  'date': '10/27/2018'
+}, {
+  'name': 'Skippad',
+  'leads': 980,
+  'revenue_leads': 83103,
+  'revenue_calls': 78,
+  'cost': 30,
+  'p_lead': 45,
+  'roi': 262,
+  'cpl': 43,
+  'date': '3/13/2019'
+}, {
+  'name': 'Yodoo',
+  'leads': 108,
+  'revenue_leads': 72144,
+  'revenue_calls': 50,
+  'cost': 33,
+  'p_lead': 100,
+  'roi': 308,
+  'cpl': 19,
+  'date': '9/22/2018'
+}, {
+  'name': 'Vinte',
+  'leads': 762,
+  'revenue_leads': 52232,
+  'revenue_calls': 4,
+  'cost': 16,
+  'p_lead': 4,
+  'roi': 493,
+  'cpl': 58,
+  'date': '6/16/2018'
+}, {
+  'name': 'Trilia',
+  'leads': 92,
+  'revenue_leads': 45907,
+  'revenue_calls': 44,
+  'cost': 88,
+  'p_lead': 13,
+  'roi': 392,
+  'cpl': 15,
+  'date': '11/22/2018'
+}, {
+  'name': 'Vimbo',
+  'leads': 729,
+  'revenue_leads': 45075,
+  'revenue_calls': 8,
+  'cost': 30,
+  'p_lead': 65,
+  'roi': 148,
+  'cpl': 43,
+  'date': '7/14/2018'
+}];
